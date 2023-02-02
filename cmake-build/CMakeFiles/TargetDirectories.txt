@@ -1,3 +1,0 @@
-/home/danielht/Documents/graph/Toy Graph /cmake-build/CMakeFiles/graph.dir
-/home/danielht/Documents/graph/Toy Graph /cmake-build/CMakeFiles/edit_cache.dir
-/home/danielht/Documents/graph/Toy Graph /cmake-build/CMakeFiles/rebuild_cache.dir

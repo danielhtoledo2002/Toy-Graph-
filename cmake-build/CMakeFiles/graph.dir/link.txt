@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/graph.dir/main.cpp.o -o graph 
