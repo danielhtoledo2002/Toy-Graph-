@@ -1,0 +1,3 @@
+/home/danielht/CLionProjects/graph2 /cmake-build/CMakeFiles/graph2_.dir
+/home/danielht/CLionProjects/graph2 /cmake-build/CMakeFiles/edit_cache.dir
+/home/danielht/CLionProjects/graph2 /cmake-build/CMakeFiles/rebuild_cache.dir

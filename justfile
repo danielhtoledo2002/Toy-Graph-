@@ -11,10 +11,10 @@ build_release: init
   cmake --build cmake-build --config Release
 
 run: build
-  ./cmake-build/graph
+  ./cmake-build/graph2_
 
 run_release: build_release
-  ./cmake-build/graph
+  ./cmake-build/graph2_
 
 clean:
   rm -rf cmake_build
