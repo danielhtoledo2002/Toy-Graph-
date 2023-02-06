@@ -32,11 +32,7 @@ std::vector<std::string> clone_vector (std::vector<std::string>copy_vector){
 }
 std::shared_ptr<Step> find_path (std::string head,std::map<std::string , std::vector<std::string >> graph, std::string arrival){
     std::list<std::shared_ptr<Step>> general_level;
-    std::map<std::string , std::vector<std::string >>::iterator ite_map ;
-    std::vector<std::string>::iterator ite_sec_vec;
-    std::vector<std::string>::iterator iter;
     std::set<std::string>history;
-
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
     if (graph.find(head) != graph.end()){
         general_level.push_back(nodo);
