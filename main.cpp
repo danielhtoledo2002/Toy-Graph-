@@ -41,7 +41,7 @@ std::vector<std::string> clone_vector(std::vector<std::string> copy_vector) {
 }
 
 std::shared_ptr<Step>
-find_path(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
+search_by_cost(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string> history;
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
@@ -52,15 +52,7 @@ find_path(std::string head, std::map<std::string, std::vector<Conections>> graph
         std::shared_ptr<Step> nod ;
         nod = nullptr;
         for (auto &i : general_level) {
-            auto cd = graph[i->name.son_name];
-            for (auto &hi: graph[i->name.son_name]) {
-                if (hi.son_name == arrival) {
-                    std::cout << "Nodo encontrado" << std::endl;
-                    return nodo;
-                }
-            }
-
-            if (!graph[(i)->name.son_name].empty()) {
+            if (!graph[(i)->name.son_name].empty() || i->name.son_name == arrival) {
 
                 if(nod == nullptr){
                     nod = i;
@@ -82,9 +74,14 @@ find_path(std::string head, std::map<std::string, std::vector<Conections>> graph
         auto hijos = graph[nodo->name.son_name];
 
         for (auto &hijo : hijos) {
-            general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo, (hijo.coste + nod->suma)));
-        }
 
+            general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo, (hijo.coste + nodo->suma)));
+        }
+        
+        if (nodo->name.son_name == arrival) {
+            std::cout << "Nodo encontrado" << std::endl;
+            return nodo;
+        }
     }
     return nullptr;
 }
@@ -104,7 +101,7 @@ int main() {
     connections = {{"Oradera", 71}};
     graph["Zerind"] = connections;
     connections.clear();
-    connections = {{"Fragaras", 99}, {"Rimnicu Viicea", 97}};
+    connections = {{"Fragaras", 99}, {"Rimnicu Viicea", 80}};
     graph["Sibiu"] = connections;
     connections.clear();
     // Third level
@@ -117,7 +114,7 @@ int main() {
     connections = {{"Bucharest", 211}};
     graph["Fragaras"] = connections;
     connections.clear();
-    connections = {{"Pitesti", 97}, {"Craiova", 146}};
+    connections = {{"Pitesti",97}, {"Craiova", 146}};
     graph["Rimnicu Viicea"] = connections;
     connections.clear();
     // Four level
@@ -161,7 +158,7 @@ int main() {
     connections = {};
     graph["Neamt"] = connections;
     connections.clear();
-    auto x = find_path("Arad", graph, "Neamt");
+    auto x = search_by_cost("Arad", graph, "Neamt");
     while (x != nullptr) {
         list.push_front(x);
         x = x->dad;
