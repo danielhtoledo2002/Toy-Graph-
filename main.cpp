@@ -40,6 +40,34 @@ std::vector<std::string> clone_vector(std::vector<std::string> copy_vector) {
     return copy;
 }
 
+std::shared_ptr<Step> find_path (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string>history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()){
+        general_level.push_back(nodo);
+    }
+
+    while(!general_level.empty()){
+        nodo = general_level.front();
+        general_level.pop_front();
+        if (nodo->name.son_name == arrival){
+            std::cout<<"Nodo encontrado"<< std::endl;
+            return nodo;
+        } else{
+
+            auto hijos = graph[nodo->name.son_name];
+            for(auto & hijo: hijos ){
+                if (!history.contains( hijo.son_name)) {
+                    history.insert(hijo.son_name);
+                    general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo,hijo.coste));
+                }
+            }
+        }
+    }
+    return nullptr;
+}
+
 std::shared_ptr<Step>
 search_by_cost(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
     std::list<std::shared_ptr<Step>> general_level;
@@ -90,6 +118,7 @@ int main() {
     std::vector<Conections> connections;
     std::map<std::string, std::vector<Conections>> graph;
     std::list<std::shared_ptr<Step>> list;
+
     // First level
     connections = {{"Timisoara", 118}, {"Zerind", 100}, {"Sibiu", 140}};
     graph["Arad"] = connections;
@@ -165,5 +194,15 @@ int main() {
     }
     for (auto &resultado : list) {
         std::cout << resultado->name.son_name << " -> "<<resultado->suma<<" ";
+    }
+    list.clear();
+    std::cout<<""<<std::endl;
+    auto z = find_path("Arad",graph, "Neamt");
+    while (z != nullptr){
+        list.push_front(z);
+        z = z->dad;
+    }
+    for (auto & resultado:list) {
+        std::cout<<resultado->name.son_name<<" ->";
     }
 }
