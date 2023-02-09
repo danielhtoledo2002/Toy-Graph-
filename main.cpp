@@ -68,8 +68,7 @@ std::shared_ptr<Step> find_path (std::string head,std::map<std::string , std::ve
     return nullptr;
 }
 
-std::shared_ptr<Step>
-search_by_cost(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
+std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string> history;
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
@@ -112,6 +111,18 @@ search_by_cost(std::string head, std::map<std::string, std::vector<Conections>> 
         }
     }
     return nullptr;
+}
+std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval, std::map<std::string, std::vector<Conections>> graph){
+    
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
+
+
+
 }
 int main() {
 
@@ -187,7 +198,7 @@ int main() {
     connections = {};
     graph["Neamt"] = connections;
     connections.clear();
-    auto x = search_by_cost("Arad", graph, "Neamt");
+    auto x = search_by_cost("Sibiu", graph, "Bucharest");
     while (x != nullptr) {
         list.push_front(x);
         x = x->dad;
