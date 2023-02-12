@@ -1,10 +1,11 @@
+#include <cstdlib>
 #include <iostream>
 #include <list>
 #include <map>
 #include <memory>
 #include <set>
-#include <stack>
 #include <vector>
+#include <time.h>
 
 struct Conections {
     std::string son_name;
@@ -104,7 +105,7 @@ std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std:
 
             general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo, (hijo.coste + nodo->suma)));
         }
-        
+
         if (nodo->name.son_name == arrival) {
             std::cout << "Nodo encontrado" << std::endl;
             return nodo;
@@ -112,18 +113,56 @@ std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std:
     }
     return nullptr;
 }
+
 std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval, std::map<std::string, std::vector<Conections>> graph){
-    
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string> history;
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+
     if (graph.find(head) != graph.end()) {
         general_level.push_back(nodo);
     }
+    while (!general_level.empty()){
+        srand ( time(NULL) );
+        nodo = general_level.back();
+        general_level.pop_back();
+        if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
+            while(graph[nodo->dad->name.son_name].size() > 1){
+                nodo = nodo->dad;
+            }
 
+        }
 
+        if (nodo->name.son_name == aririval){
+            return nodo;
+        }
+        else{
+            auto hijos = graph[nodo->name.son_name];
+            if(hijos.size() > 1){
+
+                auto hijo = hijos[(rand() % hijos.size())];
+
+                general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo,hijo.coste));
+            }else{
+                if (!hijos.empty()){
+                    general_level.push_back(std::make_shared<Step>(hijos[0].son_name, nodo,hijos[0].coste));
+                } else{
+                    if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
+                        while(graph[nodo->dad->name.son_name].size() > 1){
+                            nodo = nodo->dad;
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+    }
+    return nullptr;
 
 }
+
 int main() {
 
     std::vector<Conections> connections;
@@ -212,6 +251,19 @@ int main() {
     while (z != nullptr){
         list.push_front(z);
         z = z->dad;
+    }
+    for (auto & resultado:list) {
+        std::cout<<resultado->name.son_name<<" ->";
+    }
+
+    list.clear();
+
+    std::cout<<""<<std::endl;
+    std::cout<<"Last method"<<std::endl;
+    auto s = find_the_first_path("Arad","Neamt", graph);
+    while (s != nullptr){
+        list.push_front(s);
+        s = s->dad;
     }
     for (auto & resultado:list) {
         std::cout<<resultado->name.son_name<<" ->";
