@@ -114,6 +114,8 @@ std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std:
     return nullptr;
 }
 
+/*
+ * beta method
 std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval, std::map<std::string, std::vector<Conections>> graph){
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string> history;
@@ -122,16 +124,17 @@ std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval,
     if (graph.find(head) != graph.end()) {
         general_level.push_back(nodo);
     }
-    while (!general_level.empty()){
-        srand ( time(NULL) );
+    while (true){
         nodo = general_level.back();
-        general_level.pop_back();
+        srand ( time(NULL) );
         if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
             while(graph[nodo->dad->name.son_name].size() > 1){
                 nodo = nodo->dad;
             }
 
         }
+
+        general_level.pop_back();
 
         if (nodo->name.son_name == aririval){
             return nodo;
@@ -161,6 +164,34 @@ std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval,
     }
     return nullptr;
 
+}
+ */
+
+std::shared_ptr<Step> find_depht (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string>history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()){
+        general_level.push_back(nodo);
+    }
+
+    while(!general_level.empty()){
+
+        nodo = general_level.back();
+        general_level.pop_back();
+        if (nodo->name.son_name == arrival){
+            std::cout<<"Nodo encontrado"<< std::endl;
+            return nodo;
+        } else{
+
+            auto hijos = graph[nodo->name.son_name];
+            for(auto & hijo: hijos ){
+                general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo,hijo.coste));
+
+            }
+        }
+    }
+    return nullptr;
 }
 
 int main() {
@@ -220,14 +251,12 @@ int main() {
     graph["Urziceni"] = connections;
     connections.clear();
     // Six Level
-    connections = {{"Eforie", 98}};
-    graph["Hirsova"] = connections;
-    connections.clear();
+
     connections = {{"Iasi", 92}};
     graph["Vaslui"] = connections;
     connections.clear();
     // Seven Level
-    connections = {};
+    connections = {{"Eforie", 86}};
     graph["Hirsova"] = connections;
     connections.clear();
     connections = {{"Neamt", 87}};
@@ -257,15 +286,19 @@ int main() {
     }
 
     list.clear();
-
     std::cout<<""<<std::endl;
     std::cout<<"Last method"<<std::endl;
-    auto s = find_the_first_path("Arad","Neamt", graph);
-    while (s != nullptr){
-        list.push_front(s);
-        s = s->dad;
-    }
-    for (auto & resultado:list) {
-        std::cout<<resultado->name.son_name<<" ->";
+    auto s = find_depht("Arad",graph, "Neamt");
+    if (s == nullptr){
+        std::cout<<"el resultado no existe"<<std::endl;
+
+    } else {
+        while (s != nullptr) {
+            list.push_front(s);
+            s = s->dad;
+        }
+        for (auto &resultado: list) {
+            std::cout << resultado->name.son_name << " ->";
+        }
     }
 }
