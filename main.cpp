@@ -114,59 +114,6 @@ std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std:
     return nullptr;
 }
 
-/*
- * beta method
-std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval, std::map<std::string, std::vector<Conections>> graph){
-    std::list<std::shared_ptr<Step>> general_level;
-    std::set<std::string> history;
-    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
-
-    if (graph.find(head) != graph.end()) {
-        general_level.push_back(nodo);
-    }
-    while (true){
-        nodo = general_level.back();
-        srand ( time(NULL) );
-        if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
-            while(graph[nodo->dad->name.son_name].size() > 1){
-                nodo = nodo->dad;
-            }
-
-        }
-
-        general_level.pop_back();
-
-        if (nodo->name.son_name == aririval){
-            return nodo;
-        }
-        else{
-            auto hijos = graph[nodo->name.son_name];
-            if(hijos.size() > 1){
-
-                auto hijo = hijos[(rand() % hijos.size())];
-
-                general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo,hijo.coste));
-            }else{
-                if (!hijos.empty()){
-                    general_level.push_back(std::make_shared<Step>(hijos[0].son_name, nodo,hijos[0].coste));
-                } else{
-                    if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
-                        while(graph[nodo->dad->name.son_name].size() > 1){
-                            nodo = nodo->dad;
-                        }
-
-                    }
-                }
-
-            }
-        }
-
-    }
-    return nullptr;
-
-}
- */
-
 std::shared_ptr<Step> find_depht (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string>history;
@@ -302,3 +249,79 @@ int main() {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * beta method
+std::shared_ptr<Step>find_the_first_path(std::string head, std::string aririval, std::map<std::string, std::vector<Conections>> graph){
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
+    while (true){
+        nodo = general_level.back();
+        srand ( time(NULL) );
+        if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
+            while(graph[nodo->dad->name.son_name].size() > 1){
+                nodo = nodo->dad;
+            }
+
+        }
+
+        general_level.pop_back();
+
+        if (nodo->name.son_name == aririval){
+            return nodo;
+        }
+        else{
+            auto hijos = graph[nodo->name.son_name];
+            if(hijos.size() > 1){
+
+                auto hijo = hijos[(rand() % hijos.size())];
+
+                general_level.push_back(std::make_shared<Step>(hijo.son_name, nodo,hijo.coste));
+            }else{
+                if (!hijos.empty()){
+                    general_level.push_back(std::make_shared<Step>(hijos[0].son_name, nodo,hijos[0].coste));
+                } else{
+                    if(graph[nodo->name.son_name].empty() && nodo->name.son_name != aririval){
+                        while(graph[nodo->dad->name.son_name].size() > 1){
+                            nodo = nodo->dad;
+                        }
+
+                    }
+                }
+
+            }
+        }
+
+    }
+    return nullptr;
+
+}
+ */
