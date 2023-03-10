@@ -41,7 +41,7 @@ std::vector<std::string> clone_vector(std::vector<std::string> copy_vector) {
     return copy;
 }
 
-std::shared_ptr<Step> find_path (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
+std::shared_ptr<Step> busqueda_ancho (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string>history;
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
@@ -69,7 +69,7 @@ std::shared_ptr<Step> find_path (std::string head,std::map<std::string , std::ve
     return nullptr;
 }
 
-std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
+std::shared_ptr<Step>djkstrap(std::string head, std::map<std::string, std::vector<Conections>> graph,std::string arrival) {
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string> history;
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
@@ -114,7 +114,7 @@ std::shared_ptr<Step>search_by_cost(std::string head, std::map<std::string, std:
     return nullptr;
 }
 
-std::shared_ptr<Step> find_depht (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
+std::shared_ptr<Step> busqueda_profundo (std::string head,std::map<std::string , std::vector<Conections >> graph, std::string arrival){
     std::list<std::shared_ptr<Step>> general_level;
     std::set<std::string>history;
     std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
@@ -213,7 +213,7 @@ int main() {
     connections = {};
     graph["Neamt"] = connections;
     connections.clear();
-    auto x = search_by_cost("Sibiu", graph, "Bucharest");
+    auto x = busqueda_ancho("Sibiu", graph, "Bucharest");
     while (x != nullptr) {
         list.push_front(x);
         x = x->dad;
@@ -223,7 +223,7 @@ int main() {
     }
     list.clear();
     std::cout<<""<<std::endl;
-    auto z = find_path("Arad",graph, "Neamt");
+    auto z = djkstrap("Arad",graph, "Neamt");
     while (z != nullptr){
         list.push_front(z);
         z = z->dad;
@@ -235,7 +235,7 @@ int main() {
     list.clear();
     std::cout<<""<<std::endl;
     std::cout<<"Last method"<<std::endl;
-    auto s = find_depht("Arad",graph, "Neamt");
+    auto s = busqueda_profundo("Arad",graph, "Neamt");
     if (s == nullptr){
         std::cout<<"el resultado no existe"<<std::endl;
 
