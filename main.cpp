@@ -230,6 +230,58 @@ greddy_search(std::string head,
     return nullptr;
 }
 
+std::shared_ptr<Step>
+a_star_method(std::string head,
+              std::map<std::string, std::vector<Conections>> &graph,
+              std::string arrival,
+              std::map<std::string, std::vector<float>> &heuristica) {
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
+    while (true) {
+        std::shared_ptr<Step> nod;
+        nod = nullptr;
+        for (auto &i : general_level) {
+            if (!graph[(i)->name.son_name].empty() || i->name.son_name == arrival) {
+
+                if (nod == nullptr) {
+                    nod = i;
+                } else {
+                    if (i->suma < nod->suma) {
+                        nod = i;
+                    }
+                }
+            }
+        }
+        if (nod == nullptr) {
+            return nullptr;
+        }
+
+        nodo = nod;
+        general_level.remove(nod);
+        // general_level.push_back(std::make_shared<Step>(nod->name, nod,
+        // nod->suma));
+
+        auto hijos = graph[nodo->name.son_name];
+
+        for (auto &hijo : hijos) {
+
+            general_level.push_back(std::make_shared<Step>(
+                    hijo.son_name, nodo,
+                    (make_heuristic(graph, hijo.son_name, arrival, heuristica) +
+                     nodo->suma + hijo.coste)));
+        }
+
+        if (nodo->name.son_name == arrival) {
+            std::cout << "Nodo encontrado" << std::endl;
+            return nodo;
+        }
+    }
+    return nullptr;
+}
 int main() {
 
     std::vector<Conections> connections;
@@ -371,6 +423,18 @@ int main() {
     }
     list.clear();
     std::cout << "" << std::endl;
+
+    auto ww = a_star_method("Arad", graph, "Bucharest", heuristic);
+
+    while (ww != nullptr) {
+        list.push_front(ww);
+        ww = ww->dad;
+    }
+    for (auto &resultado : list) {
+        std::cout << resultado->name.son_name << " -> " << resultado->suma << " ";
+    }
+
+    
     list.clear();
     std::cout << "" << std::endl;
 }
