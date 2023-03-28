@@ -156,5 +156,23 @@ int main() {
     
     list.clear();
     std::cout << "" << std::endl;
+
+    
+    list.clear();
+    std::cout << "" << std::endl;
+
+    auto www = weight_a_star_method("Arad", graph, "Bucharest", heuristic, 1.3);
+
+    while (www != nullptr) {
+        list.push_front(www);
+        www = www->dad;
+    }
+    for (auto &resultado : list) {
+        std::cout << resultado->name.son_name << " -> " << resultado->suma << " ";
+    }
+
+    
+    list.clear();
+    std::cout << "" << std::endl;
 }
 

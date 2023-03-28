@@ -43,8 +43,7 @@ std::vector<std::string> clone_vector(std::vector<std::string> copy_vector) {
     return copy;
 }
 
-std::shared_ptr<Step>
-busqueda_ancho(std::string head,
+std::shared_ptr<Step>busqueda_ancho(std::string head,
                std::map<std::string, std::vector<Conections>> graph,
                std::string arrival) {
     std::list<std::shared_ptr<Step>> general_level;
@@ -274,6 +273,61 @@ a_star_method(std::string head,
                     hijo.son_name, nodo,
                     (make_heuristic(graph, hijo.son_name, arrival, heuristica) +
                      nodo->suma + hijo.coste)));
+        }
+
+        if (nodo->name.son_name == arrival) {
+            std::cout << "Nodo encontrado" << std::endl;
+            return nodo;
+        }
+    }
+    return nullptr;
+}
+
+
+
+std::shared_ptr<Step>
+weight_a_star_method(std::string head,
+              std::map<std::string, std::vector<Conections>> &graph,
+              std::string arrival,
+              std::map<std::string, std::vector<float>> &heuristica, float weight) {
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
+    while (true) {
+        std::shared_ptr<Step> nod;
+        nod = nullptr;
+        for (auto &i : general_level) {
+            if (!graph[(i)->name.son_name].empty() || i->name.son_name == arrival) {
+
+                if (nod == nullptr) {
+                    nod = i;
+                } else {
+                    if (i->suma < nod->suma) {
+                        nod = i;
+                    }
+                }
+            }
+        }
+        if (nod == nullptr) {
+            return nullptr;
+        }
+
+        nodo = nod;
+        general_level.remove(nod);
+        // general_level.push_back(std::make_shared<Step>(nod->name, nod,
+        // nod->suma));
+
+        auto hijos = graph[nodo->name.son_name];
+
+        for (auto &hijo : hijos) {
+
+            general_level.push_back(std::make_shared<Step>(
+                    hijo.son_name, nodo,
+                    (make_heuristic(graph, hijo.son_name, arrival, heuristica) +
+                     nodo->suma + weight * hijo.coste )));
         }
 
         if (nodo->name.son_name == arrival) {
