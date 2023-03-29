@@ -17,4 +17,4 @@ run_release: build_release
   ./cmake-build/graph2_
 
 clean:
-  rm -rf cmake_build
+  rm -rf cmake-build

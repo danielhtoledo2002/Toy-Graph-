@@ -1,4 +1,4 @@
-
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <system_error>
 #include <time.h>
 #include <vector>
 
@@ -172,7 +173,6 @@ float make_heuristic(std::map<std::string, std::vector<Conections>> &graph,
         auto z = std::pow((x2 - x1), 2) + std::pow((y2 - y1), 2);
         return std::sqrt(z);
     }
-    std::cout << "Nodos no encontrados" << std::endl;
 
     return 0.;
 }
@@ -334,6 +334,51 @@ weight_a_star_method(std::string head,
             std::cout << "Nodo encontrado" << std::endl;
             return nodo;
         }
+    }
+    return nullptr;
+}
+
+std::shared_ptr<Step>beam_search(std::string head,std::map<std::string, std::vector<Conections>> &graph,std::string arrival,
+              std::map<std::string, std::vector<float>> &heuristica, int number_nodes) {
+
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
+
+    while (true) {
+        std::vector<std::shared_ptr<Step>> nodoss;
+        for (auto &i : general_level) {
+            nodoss.push_back(i);
+        }
+        std::sort(nodoss.begin(), nodoss.end());
+
+        if (nodoss.empty()){
+            std::cout<<"ERROR"<<std::endl;
+            return nullptr; 
+        }
+        while ( nodoss.size() == number_nodes){           
+            nodoss.pop_back();
+         }
+        for (auto i: nodoss){
+            nodo = i; 
+            general_level.remove(i);
+
+            auto hijos = graph[nodo->name.son_name];
+
+            for (auto &hijo : hijos) {
+
+                general_level.push_back(std::make_shared<Step>(
+                        hijo.son_name, nodo, hijo.coste));
+            }
+            if (nodo->name.son_name == arrival) {
+                std::cout << "Nodo encontrado" << std::endl;
+                return nodo;
+            }
+        }
+
     }
     return nullptr;
 }

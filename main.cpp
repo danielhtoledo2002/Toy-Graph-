@@ -93,41 +93,6 @@ int main() {
     connections = {};
     graph["Neamt"] = connections;
     connections.clear();
-    auto x = busqueda_ancho("Sibiu", graph, "Bucharest");
-    while (x != nullptr) {
-        list.push_front(x);
-        x = x->dad;
-    }
-    for (auto &resultado : list) {
-        std::cout << resultado->name.son_name << " -> " << resultado->suma << " ";
-    }
-    list.clear();
-    std::cout << "" << std::endl;
-    auto z = djkstrap("Arad", graph, "Neamt");
-    while (z != nullptr) {
-        list.push_front(z);
-        z = z->dad;
-    }
-    for (auto &resultado : list) {
-        std::cout << resultado->name.son_name << " ->";
-    }
-
-    list.clear();
-    std::cout << "" << std::endl;
-    std::cout << "Last method" << std::endl;
-    auto s = busqueda_profundo("Arad", graph, "Neamt");
-    if (s == nullptr) {
-        std::cout << "el resultado no existe" << std::endl;
-
-    } else {
-        while (s != nullptr) {
-            list.push_front(s);
-            s = s->dad;
-        }
-        for (auto &resultado : list) {
-            std::cout << resultado->name.son_name << " ->";
-        }
-    }
 
     list.clear();
     std::cout << "" << std::endl;
@@ -169,6 +134,21 @@ int main() {
     }
     for (auto &resultado : list) {
         std::cout << resultado->name.son_name << " -> " << resultado->suma << " ";
+    }
+
+    
+    list.clear();
+    std::cout << "" << std::endl;
+
+
+    auto wwww = beam_search("Arad", graph, "Bucharest", heuristic, 2);
+
+    while (wwww != nullptr) {
+        list.push_front(wwww);
+        wwww = wwww->dad;
+    }
+    for (auto &resultado : list) {
+        std::cout << resultado->name.son_name << " -> " ;
     }
 
     
