@@ -404,7 +404,7 @@ std::shared_ptr<Step>simulated_annealing(std::string head,std::map<std::string, 
             std::cout<<"ERROR"<<std::endl;
             return nullptr; 
         }
-        while ( nodoss.size() == number_nodes){           
+        while ( nodoss.size() == temperature){           
             nodoss.pop_back();
          }
         for (auto i: nodoss){
