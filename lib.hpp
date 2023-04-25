@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <map>
@@ -35,14 +36,6 @@ Step::Step(std::string head, std::shared_ptr<Step> papa, float x) {
     suma = x;
 }
 
-std::vector<std::string> clone_vector(std::vector<std::string> copy_vector) {
-    std::vector<std::string> copy;
-    std::vector<std::string>::iterator iter;
-    for (iter = copy_vector.begin(); iter < copy_vector.end(); iter++) {
-        copy.push_back(*iter);
-    }
-    return copy;
-}
 
 std::shared_ptr<Step>busqueda_ancho(std::string head,
                std::map<std::string, std::vector<Conections>> graph,
@@ -209,8 +202,6 @@ greddy_search(std::string head,
 
         nodo = nod;
         general_level.remove(nod);
-        // general_level.push_back(std::make_shared<Step>(nod->name, nod,
-        // nod->suma));
 
         auto hijos = graph[nodo->name.son_name];
 
@@ -383,6 +374,57 @@ std::shared_ptr<Step>beam_search(std::string head,std::map<std::string, std::vec
     return nullptr;
 }
 
+std::shared_ptr<Step>hight_climbing(std::string head,std::map<std::string, std::vector<Conections>> &graph,std::string arrival,
+              std::map<std::string, std::vector<float>> &heuristica) {
+
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
+
+    while (true) {
+        std::vector<std::shared_ptr<Step>> nodoss;
+        for (auto &i : general_level) {
+            nodoss.push_back(i);
+            if (i->name.son_name == arrival){
+
+                return i;
+            }
+        }
+        std::sort(nodoss.begin(), nodoss.end(),std::greater<std::shared_ptr<Step>>());
+        if (nodoss.empty()){
+            std::cout<<"ERROR"<<std::endl;
+            return nullptr; 
+        }
+        for (auto i: nodoss){
+            nodo = i; 
+            general_level.remove(i);
+
+            auto hijos = graph[nodo->name.son_name];
+
+            for (auto &hijo : hijos) {
+
+                general_level.push_back(std::make_shared<Step>(
+                        hijo.son_name, nodo, hijo.coste));
+            }
+        }
+
+    }
+    return nullptr;
+}
+
+
+
+
+
+
+
+
+
+
+// NO ESTA HECHO (ES PARECIDO AL BEAM )
 std::shared_ptr<Step>simulated_annealing(std::string head,std::map<std::string, std::vector<Conections>> &graph,std::string arrival,
               std::map<std::string, std::vector<float>> &heuristica, int temperature, int max_temperature, float percentage) {
     
