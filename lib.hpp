@@ -406,8 +406,10 @@ std::shared_ptr<Step>hight_climbing(std::string head,std::map<std::string, std::
 
             for (auto &hijo : hijos) {
 
-                general_level.push_back(std::make_shared<Step>(
-                        hijo.son_name, nodo, hijo.coste));
+
+                 general_level.push_back(std::make_shared<Step>(
+                    hijo.son_name, nodo,make_heuristic(graph, hijo.son_name, arrival, heuristica)));
+                
             }
         }
 
@@ -415,8 +417,46 @@ std::shared_ptr<Step>hight_climbing(std::string head,std::map<std::string, std::
     return nullptr;
 }
 
+std::shared_ptr<Step>hight_climbing_variation(std::string head,std::map<std::string, std::vector<Conections>> &graph,std::string arrival,
+              std::map<std::string, std::vector<float>> &heuristica) {
 
+    std::list<std::shared_ptr<Step>> general_level;
+    std::set<std::string> history;
+    std::shared_ptr<Step> nodo = std::make_shared<Step>(Step(head));
+    if (graph.find(head) != graph.end()) {
+        general_level.push_back(nodo);
+    }
 
+    while (true) {
+        std::vector<std::shared_ptr<Step>> nodoss;
+        for (auto &i : general_level) {
+            i->suma+= i->suma * (std::rand() % 100);
+            nodoss.push_back(i);
+            if (i->name.son_name == arrival){
+
+                return i;
+            }
+        }
+
+        
+        std::sort(nodoss.begin(), nodoss.end(),std::greater<std::shared_ptr<Step>>());
+        if (nodoss.empty()){
+            std::cout<<"ERROR"<<std::endl;
+            return nullptr; 
+        }
+        for (auto i: nodoss){
+            nodo = i; 
+            general_level.remove(i);
+            auto hijos = graph[nodo->name.son_name];
+            for (auto &hijo : hijos) {
+
+                 general_level.push_back(std::make_shared<Step>(
+                    hijo.son_name, nodo,make_heuristic(graph, hijo.son_name, arrival, heuristica)));
+            }
+        }
+    }
+    return nullptr;
+}
 
 
 
