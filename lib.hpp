@@ -459,12 +459,6 @@ std::shared_ptr<Step>hight_climbing_variation(std::string head,std::map<std::str
 }
 
 
-
-
-
-
-
-// NO ESTA HECHO (ES PARECIDO AL BEAM )
 std::shared_ptr<Step>simulated_annealing(std::string head,std::map<std::string, std::vector<Conections>> &graph,std::string arrival,
               std::map<std::string, std::vector<float>> &heuristica, int temperature, int max_temperature, float percentage) {
     

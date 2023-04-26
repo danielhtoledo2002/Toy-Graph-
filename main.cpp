@@ -97,7 +97,7 @@ int main() {
 
     list.clear();
     std::cout << "" << std::endl;
-    auto u = greddy_search("Arad", graph, "Bucharest", heuristic);
+    auto u = hight_climbing("Arad", graph, "Bucharest", heuristic);
 
     while (u != nullptr) {
         list.push_front(u);
@@ -109,7 +109,7 @@ int main() {
     list.clear();
     std::cout << "" << std::endl;
 
-    auto ww = a_star_method("Arad", graph, "Bucharest", heuristic);
+    auto ww = hight_climbing_variation("Arad", graph, "Bucharest", heuristic);
 
     while (ww != nullptr) {
         list.push_front(ww);
@@ -124,36 +124,6 @@ int main() {
     std::cout << "" << std::endl;
 
     
-    list.clear();
-    std::cout << "" << std::endl;
 
-    auto www = weight_a_star_method("Arad", graph, "Bucharest", heuristic, 1.3);
-
-    while (www != nullptr) {
-        list.push_front(www);
-        www = www->dad;
-    }
-    for (auto &resultado : list) {
-        std::cout << resultado->name.son_name << " -> " << resultado->suma << " ";
-    }
-
-    
-    list.clear();
-    std::cout << "" << std::endl;
-
-
-    auto wwww = beam_search("Arad", graph, "Bucharest", heuristic, 2);
-
-    while (wwww != nullptr) {
-        list.push_front(wwww);
-        wwww = wwww->dad;
-    }
-    for (auto &resultado : list) {
-        std::cout << resultado->name.son_name << " -> " ;
-    }
-
-    
-    list.clear();
-    std::cout << "" << std::endl;
 }
 
